@@ -1,5 +1,6 @@
 import * as Matter from 'matter-js'
 import generateBox from './box'
+import initMouseHandle from './mouseHandle'
 
 export function Pet() {
   const Engine = Matter.Engine,
@@ -21,7 +22,7 @@ export function Pet() {
 
   // create renderer
   const render = Render.create({
-    element: document.getElementById('pet3-wrapper'),
+    element: document.getElementById('pet3-wrapper')!,
     engine: engine,
     options: {
       width: stageWidth,
@@ -195,38 +196,10 @@ export function Pet() {
     max: { x: stageWidth, y: stageHeight },
   })
 
-  const handler = document.getElementById('pet3-handler')!
-  let draging = false
+  // init mouse handle when set canvas element 'pointer-events' to 'none'
+  initMouseHandle(bodyBody, runner)
 
-  handler.addEventListener('mousedown', (e) => {
-    e.preventDefault()
-    draging = true
-  })
-  document.body.addEventListener('mousemove', (e) => {
-    if (draging) {
-      Matter.Body.setPosition(bodyBody, { x: e.x, y: e.y }, true)
-    }
-  })
-
-  document.body.addEventListener('mouseup', () => {
-    draging = false
-  })
-  function step() {
-    handler.style.setProperty('--pet3-rotate', bodyBody.angle + 'rad')
-
-    handler.style.setProperty(
-      '--pet3-handler-x',
-      bodyBody.position.x - 30 + 'px'
-    )
-    handler.style.setProperty(
-      '--pet3-handler-y',
-      bodyBody.position.y - 40 + 'px'
-    )
-    window.requestAnimationFrame(step)
-  }
-
-  window.requestAnimationFrame(step)
-
+  // generate lucky box
   generateBox(stageWidth, stageHeight, engine, world, bodyHead)
 
   // context for MatterTools.Demo

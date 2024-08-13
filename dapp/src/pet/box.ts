@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Matter from 'matter-js'
 
 export default function generateBox(
@@ -6,7 +5,7 @@ export default function generateBox(
   stageHeight: number,
   engine: Matter.Engine,
   world: Matter.World,
-  bodyHead: any
+  bodyHead: Matter.Body
 ) {
   let collisionTimes = 0
   const WinCounts = 3
@@ -28,16 +27,15 @@ export default function generateBox(
   Composite.add(world, [bodyBox])
   Events.on(engine, 'collisionStart', onCollisionStart)
 
-  function onCollisionStart(e: any) {
+  function onCollisionStart(e: Matter.IEventCollision<Matter.Engine>) {
     const pairs = e.pairs
     if (
       pairs.findIndex(
-        (pair: any) =>
+        (pair) =>
           (pair.bodyA === bodyBox && pair.bodyB === bodyHead) ||
           (pair.bodyB === bodyBox && pair.bodyA === bodyHead)
       ) !== -1
     ) {
-      console.log('collision')
       collisionTimes++
       if (collisionTimes > WinCounts) {
         // Composite.remove(world, bodyBox)
