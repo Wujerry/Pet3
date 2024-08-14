@@ -82,10 +82,14 @@ export function Pet() {
   })
 
   // init mouse handle when set canvas element 'pointer-events' to 'none'
-  initMouseHandle(petParts.bodyBody, runner)
+  initMouseHandle(petParts.bodyBody, runner, engine)
 
   // generate lucky box
   generateBox(engine, world, petParts.bodyBody)
+
+  setTimeout(() => {
+    Matter.Runner.stop(runner)
+  }, 5000)
 
   // context for MatterTools.Demo
   return {
