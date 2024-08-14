@@ -1,12 +1,13 @@
 import * as Matter from 'matter-js'
 import generateBox from './box'
 import initMouseHandle from './mouseHandle'
+import MatterUitl from './util'
+import PetParts from './parts'
 
 export function Pet() {
   const Engine = Matter.Engine,
     Render = Matter.Render,
     Runner = Matter.Runner,
-    Constraint = Matter.Constraint,
     MouseConstraint = Matter.MouseConstraint,
     Mouse = Matter.Mouse,
     Composite = Matter.Composite,
@@ -17,8 +18,8 @@ export function Pet() {
       enableSleeping: true,
     }),
     world = engine.world
-  const stageWidth = window.innerWidth
-  const stageHeight = window.innerHeight
+  const stageWidth = MatterUitl.stageWidth
+  const stageHeight = MatterUitl.stageHeight
 
   // create renderer
   const render = Render.create({
@@ -39,124 +40,8 @@ export function Pet() {
   const runner = Runner.create()
   Runner.run(runner, engine)
 
-  // define body
-  const bodyBody = Bodies.rectangle(60, 60, 60, 80)
-
-  // add head
-  const bodyHead = Bodies.circle(60, 60, 25)
-
-  const constraint = Constraint.create({
-    bodyA: bodyBody,
-    pointA: { x: 0, y: 30 },
-    bodyB: bodyHead,
-    pointB: { x: 0, y: 0 },
-    damping: 1,
-    length: 40,
-    render: {
-      visible: false,
-    },
-  })
-  Composite.add(world, [bodyBody, bodyHead, constraint])
-
-  // add eyes
-  const bodyEyeLeft = Bodies.circle(60, 60, 5)
-  const constraintEyeLeft = Constraint.create({
-    bodyA: bodyHead,
-    pointA: { x: 0, y: 10 },
-    bodyB: bodyEyeLeft,
-    pointB: { x: 0, y: 0 },
-    damping: 1,
-    length: 40,
-    render: {
-      visible: false,
-    },
-  })
-  const bodyEyeRight = Bodies.circle(60, 60, 5)
-  const constraintEyeRight = Constraint.create({
-    bodyA: bodyHead,
-    pointA: { x: 0, y: -10 },
-    bodyB: bodyEyeRight,
-    pointB: { x: 0, y: 0 },
-    damping: 1,
-    length: 40,
-    render: {
-      visible: false,
-    },
-  })
-  Composite.add(world, [
-    bodyEyeRight,
-    bodyEyeLeft,
-    constraintEyeRight,
-    constraintEyeLeft,
-  ])
-
-  // add leg
-  const bodyLegLeft = Bodies.rectangle(160, 160, 20, 50)
-  const constraintLegLeft = Constraint.create({
-    bodyA: bodyBody,
-    pointA: { x: -20, y: -30 },
-    bodyB: bodyLegLeft,
-    pointB: { x: 0, y: -25 },
-    stiffness: 0.01,
-    damping: 1,
-    length: 40,
-    // render: {
-    //   visible: false,
-    // },
-  })
-  const bodyLegRight = Bodies.rectangle(160, 160, 20, 50)
-  const constraintLegRight = Constraint.create({
-    bodyA: bodyBody,
-    pointA: { x: 20, y: -30 },
-    bodyB: bodyLegRight,
-    pointB: { x: 0, y: -25 },
-    stiffness: 0.01,
-    damping: 1,
-    length: 40,
-    // render: {
-    //   visible: false,
-    // },
-  })
-  Composite.add(world, [
-    bodyLegRight,
-    bodyLegLeft,
-    constraintLegRight,
-    constraintLegLeft,
-  ])
-
-  // add arm
-  const bodyArmLeft = Bodies.rectangle(160, 160, 20, 50)
-  const constraintArmLeft = Constraint.create({
-    bodyA: bodyBody,
-    pointA: { x: -20, y: 30 },
-    bodyB: bodyArmLeft,
-    pointB: { x: 0, y: -25 },
-    stiffness: 0.01,
-    damping: 1,
-    length: 40,
-    // render: {
-    //   visible: false,
-    // },
-  })
-  const bodyArmRight = Bodies.rectangle(160, 160, 20, 50)
-  const constraintArmRight = Constraint.create({
-    bodyA: bodyBody,
-    pointA: { x: 20, y: 30 },
-    bodyB: bodyArmRight,
-    pointB: { x: 0, y: -25 },
-    stiffness: 0.01,
-    damping: 1,
-    length: 40,
-    // render: {
-    //   visible: false,
-    // },
-  })
-  Composite.add(world, [
-    bodyArmRight,
-    bodyArmLeft,
-    constraintArmRight,
-    constraintArmLeft,
-  ])
+  // create pet parts
+  const petParts = new PetParts(world)
 
   Composite.add(world, [
     // walls
@@ -197,10 +82,10 @@ export function Pet() {
   })
 
   // init mouse handle when set canvas element 'pointer-events' to 'none'
-  initMouseHandle(bodyBody, runner)
+  initMouseHandle(petParts.bodyBody, runner)
 
   // generate lucky box
-  generateBox(stageWidth, stageHeight, engine, world, bodyHead)
+  generateBox(engine, world, petParts.bodyBody)
 
   // context for MatterTools.Demo
   return {

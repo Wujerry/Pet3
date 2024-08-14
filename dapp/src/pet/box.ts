@@ -1,8 +1,7 @@
 import * as Matter from 'matter-js'
+import MatterUitl from './util'
 
 export default function generateBox(
-  stageWidth: number,
-  stageHeight: number,
   engine: Matter.Engine,
   world: Matter.World,
   bodyHead: Matter.Body
@@ -14,9 +13,8 @@ export default function generateBox(
   const Events = Matter.Events
   const boxWidth = 80
   const boxHeight = 80
-  const x = getRandomInt(0, stageWidth - boxWidth)
-  const y = getRandomInt(0, stageHeight - boxHeight)
 
+  const [x, y] = MatterUitl.getRandomPosition(boxWidth, boxHeight)
   // init lucky box
   const bodyBox = Bodies.rectangle(x, y, boxWidth, boxHeight, {
     isStatic: true,
@@ -42,7 +40,9 @@ export default function generateBox(
         bodyBox.render.fillStyle = '#c12c1f'
         collisionTimes = 0
         Events.off(engine, 'collisionStart', onCollisionStart)
-        chrome.storage.local.set({ score: getRandomInt(1, 10) })
+        if (chrome) {
+          chrome.storage.local.set({ score: MatterUitl.getRandomInt(1, 10) })
+        }
         setTimeout(() => {
           Composite.remove(world, bodyBox)
         }, 2000)
@@ -50,18 +50,13 @@ export default function generateBox(
         // regenerate box after 200s
         setTimeout(() => {
           bodyBox.render.fillStyle = 'transparent'
-          bodyBox.position.x = getRandomInt(0, stageWidth - boxWidth)
-          bodyBox.position.y = getRandomInt(0, stageHeight - boxHeight)
+          const [x, y] = MatterUitl.getRandomPosition(boxWidth, boxHeight)
+          bodyBox.position.x = x
+          bodyBox.position.y = y
           Composite.add(world, [bodyBox])
           Events.on(engine, 'collisionStart', onCollisionStart)
         }, 200000)
       }
     }
   }
-}
-
-function getRandomInt(min: number, max: number) {
-  const minCeiled = Math.ceil(min)
-  const maxFloored = Math.floor(max)
-  return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled) // The maximum is exclusive and the minimum is inclusive
 }
