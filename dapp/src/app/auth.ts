@@ -31,7 +31,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           }
           return {
             id: credentials?.address as string,
-            name: credentials?.address,
+            name: credentials?.address as string,
             address: credentials?.address,
           }
         } catch (error) {
