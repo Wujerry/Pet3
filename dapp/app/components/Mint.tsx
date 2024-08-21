@@ -9,10 +9,9 @@ import AppBg from './AppBg'
 const Mint = () => {
   return (
     <div className='flex h-full w-full flex-col place-content-center items-center justify-center px-4 text-slate-900'>
-      <AppBg></AppBg>
       <TiltCard />
       <div className='mt-[30px] flex justify-center'>
-        <MintButton minted={false} isConnected={true} address={'0x'}></MintButton>
+        <MintButton></MintButton>
       </div>
     </div>
   )

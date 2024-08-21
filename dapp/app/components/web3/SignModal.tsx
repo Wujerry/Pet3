@@ -1,10 +1,12 @@
 'use client'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import SignMsgBtn from './SignMsgBtn'
+import { useCurrentAccount } from '@mysten/dapp-kit'
 
 export default function SignModal() {
+  const account = useCurrentAccount()
   return (
-    <Dialog open={true}>
+    <Dialog open={!!account?.address}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className='text-white'>Sign message</DialogTitle>

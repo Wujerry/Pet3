@@ -4,7 +4,7 @@ import initMouseHandle from './mouseHandle'
 import MatterUitl from './util'
 import PetParts from './parts'
 
-export function Pet() {
+export function Pet(onBoxClick: () => void) {
   const Engine = Matter.Engine,
     Render = Matter.Render,
     Runner = Matter.Runner,
@@ -91,7 +91,7 @@ export function Pet() {
   initMouseHandle(petParts.bodyBody!)
 
   // generate lucky box
-  generateBox(engine, world, petParts.bodyBody!)
+  generateBox(engine, world, petParts.bodyBody!, onBoxClick)
 
   // context for MatterTools.Demo
   return {

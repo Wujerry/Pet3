@@ -4,6 +4,8 @@ export type User = {
   email: string
   address: string
   token: string
+  xusername?: string
+  boxs?: number
 }
 
 export type BoxHistory = {

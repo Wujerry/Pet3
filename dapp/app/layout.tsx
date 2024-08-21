@@ -4,6 +4,7 @@ import { Inter as FontSans } from 'next/font/google'
 import './globals.css'
 import Web3Provider from './common/Web3Provider'
 import clsx from 'clsx'
+import { Toaster } from '@/components/ui/toaster'
 
 export const metadata: Metadata = {
   title: 'Pet3',
@@ -51,6 +52,7 @@ export default function RootLayout({
             <div className='pet3-pl__shadow'></div>
           </div>
         </div>
+        <Toaster />
       </body>
     </html>
   )

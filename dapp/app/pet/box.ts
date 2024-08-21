@@ -1,7 +1,12 @@
 import * as Matter from 'matter-js'
 import MatterUitl from './util'
 
-export default function generateBox(engine: Matter.Engine, world: Matter.World, bodyHead: Matter.Body) {
+export default function generateBox(
+  engine: Matter.Engine,
+  world: Matter.World,
+  bodyHead: Matter.Body,
+  onBoxClick: () => void,
+) {
   let collisionTimes = 0
   const WinCounts = 1
   const Composite = Matter.Composite
@@ -17,8 +22,10 @@ export default function generateBox(engine: Matter.Engine, world: Matter.World, 
   const bodyBox = Bodies.rectangle(x, y, boxWidth, boxHeight, {
     isStatic: true,
     render: {
-      fillStyle: '#000',
-      visible: false,
+      fillStyle: 'transparent',
+      strokeStyle: '#bdbdbd',
+      lineWidth: 1,
+      // visible: false,
     },
   })
   Composite.add(world, [bodyBox])
@@ -41,7 +48,7 @@ export default function generateBox(engine: Matter.Engine, world: Matter.World, 
         if (!luckyBoxEl) return
         luckyBoxEl.style.display = 'block'
         luckyBoxEl.style.transform = `translate(${bodyBox.position.x - 75}px, ${bodyBox.position.y - 75}px)`
-        luckyBoxEl.addEventListener('click', onBoxClick)
+        luckyBoxEl.addEventListener('click', onBoxClicked)
 
         // remove box body
         Composite.remove(world, bodyBox)
@@ -54,13 +61,14 @@ export default function generateBox(engine: Matter.Engine, world: Matter.World, 
     }
   }
 
-  function onBoxClick() {
+  async function onBoxClicked() {
     console.log('box click')
     // hide lucky box
     const luckyBoxEl = document.getElementById('pet3-lucky-box')!
     if (!luckyBoxEl) return
     luckyBoxEl.style.display = 'none'
-    luckyBoxEl.removeEventListener('click', onBoxClick)
+    luckyBoxEl.removeEventListener('click', onBoxClicked)
+    onBoxClick()
     // regenerate box after 200s
     const [x, y] = util.getRandomPosition(boxWidth, boxHeight)
     Matter.Body.setPosition(bodyBox, { x, y }, true)
