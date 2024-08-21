@@ -1,20 +1,11 @@
 'use client'
-import { useAccounts, useCurrentAccount, useSignPersonalMessage, useSwitchAccount } from '@mysten/dapp-kit'
-import { verifyPersonalMessageSignature } from '@mysten/sui/verify'
+import { Button } from '@/components/ui/button'
+import { useCurrentAccount, useSignPersonalMessage } from '@mysten/dapp-kit'
 import { signIn } from 'next-auth/react'
 
 export default function SignMsgBtn() {
   const account = useCurrentAccount()
-  console.log('address:', account?.address)
-  const { mutate: switchAccount } = useSwitchAccount()
-  const accounts = useAccounts()
-  console.log('accounts:', accounts)
-  // switchAccount(
-  // 	{ account },
-  // 	{
-  // 		onSuccess: () => console.log(`switched to ${account.address}`),
-  // 	},
-  // );
+
   const { mutate: signPersonalMessage } = useSignPersonalMessage()
   const handleSignMessage = async () => {
     if (!account) {
@@ -33,8 +24,10 @@ export default function SignMsgBtn() {
     )
   }
   return (
-    <div>
-      <button onClick={handleSignMessage}>Sign Message</button>
+    <div className='flex justify-center p-4'>
+      <Button variant='secondary' onClick={handleSignMessage}>
+        Sign message
+      </Button>
     </div>
   )
 }
