@@ -13,11 +13,7 @@ export default class PetParts {
   bodyLeftArm?: Matter.Body
   bodyRightArm?: Matter.Body
 
-  constructor(
-    world: Matter.World,
-    width = window.innerWidth,
-    height = window.innerHeight
-  ) {
+  constructor(world: Matter.World, width = window.innerWidth, height = window.innerHeight) {
     this.world = world
     this.util = new MatterUitl(width, height)
   }
@@ -33,7 +29,6 @@ export default class PetParts {
     this.bodyRightArm = this.createRightArm()
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   createBody(initConstraint = true) {
     const width = 60
     const height = 80
@@ -49,7 +44,7 @@ export default class PetParts {
           strokeStyle: '#366FBC',
           lineWidth: 1,
         },
-      }
+      },
     )
     this.addToWorld([body])
     return body
@@ -279,7 +274,6 @@ export default class PetParts {
     return body
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   addToWorld(bodys: any[]) {
     Matter.Composite.add(this.world, bodys)
   }

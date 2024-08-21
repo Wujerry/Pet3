@@ -1,10 +1,6 @@
 import AutoClose from './AutoClose'
 
-export default function Page({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function XAuthedPage() {
   return (
     <html lang='en'>
       <body>
