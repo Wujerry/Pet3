@@ -1,13 +1,9 @@
-import { ConnectKitButton } from 'connectkit'
+import BindXBtn from './BindXBtn'
 
 export default function Header() {
   return (
     <header className='flex justify-end p-2'>
-      <ConnectKitButton
-        mode='dark'
-        theme='retro'
-        showAvatar={false}
-      ></ConnectKitButton>
+      <BindXBtn username={undefined}></BindXBtn>
     </header>
   )
 }

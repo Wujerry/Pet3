@@ -1,18 +1,16 @@
 import './App.css'
-import { EvmProvider } from './common/EvmProvider'
 import Header from './components/Header'
-import Mint from './components/Mint'
+import Home from './components/home/Home'
 
 function App() {
-  const content = (
+  return (
     <div className='w-full'>
       <Header></Header>
       <main>
-        <Mint></Mint>
+        <Home address={'0x'}></Home>
       </main>
     </div>
   )
-  return <EvmProvider>{content}</EvmProvider>
 }
 
 export default App

@@ -13,6 +13,11 @@ const Mint = () => {
       <div className='mt-[30px] flex justify-center'>
         <MintButton></MintButton>
       </div>
+      <div className='p-2 text-center text-lg text-gray-500'>
+        Pet3 is a virtual pet on Chrome Extension.
+        <br />
+        Drag to find hidden treasure box and $PET
+      </div>
     </div>
   )
 }

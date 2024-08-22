@@ -16,6 +16,16 @@ async function getUser(address: string): Promise<User | undefined> {
   }
 }
 
+async function getUserByXToken(address: string, token: string): Promise<User | undefined> {
+  try {
+    const user = await sql<User>`SELECT * FROM users WHERE address=${address} and token=${token}`
+    return user.rows[0]
+  } catch (error) {
+    console.error('Failed to fetch user:', error)
+    throw new Error('Failed to fetch user.')
+  }
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Twitter({}),
@@ -28,36 +38,54 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           placeholder: '0x0',
         },
         signature: {},
+        xToken: {},
+        type: {},
       },
       async authorize(credentials) {
         const address = String(credentials?.address)
         const signature = String(credentials?.signature)
+        const xToken = String(credentials?.xToken)
+        const type = String(credentials?.type)
+
         if (!isValidSuiAddress(address)) {
           return null
         }
-        const message = new TextEncoder().encode('123')
-        try {
-          const publicKey = await verifyPersonalMessageSignature(message, signature)
-          console.log('Public Key:', publicKey.toSuiAddress())
-          if (publicKey.toSuiAddress() !== address) {
-            return null
-          }
-          const user = await getUser(address)
+
+        if (type === 'ext') {
+          const user = await getUserByXToken(address, xToken)
           if (user) {
-            return user
-          } else {
-            await sql`
-              INSERT INTO users (name, address, token)
-              VALUES (${address}, ${address}, ${''})`
             return {
               id: address,
               name: address,
               address,
             }
+          } else {
+            return null
           }
-        } catch (error) {
-          console.error(error)
-          return null
+        } else {
+          const message = new TextEncoder().encode('123')
+          try {
+            const publicKey = await verifyPersonalMessageSignature(message, signature)
+            if (publicKey.toSuiAddress() !== address) {
+              return null
+            }
+            const user = await getUser(address)
+            if (user) {
+              return user
+            } else {
+              await sql`
+                INSERT INTO users (name, address, token)
+                VALUES (${address}, ${address}, ${''})`
+              return {
+                id: address,
+                name: address,
+                address,
+              }
+            }
+          } catch (error) {
+            console.error(error)
+            return null
+          }
         }
       },
     }),

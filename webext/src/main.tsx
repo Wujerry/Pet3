@@ -1,6 +1,5 @@
 // import './index.css'
 
-import { Test } from './pet/actions'
 import { boxCss, boxHtml } from './pet/assets/boxHtml'
 import { pet3HandlerStyle, pet3WrapperStyle } from './pet/assets/wrapperHtml'
 import { Pet } from './pet/Pet'
@@ -35,6 +34,3 @@ function initDom() {
 }
 initDom()
 Pet()
-
-//test
-Test()

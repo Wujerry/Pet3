@@ -9,9 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mysten/bcs": "^1.0.4",
     "@mysten/dapp-kit": "^0.14.16",
     "@mysten/sui": "^1.6.0",
     "@radix-ui/react-dialog": "^1.1.1",
+    "@radix-ui/react-navigation-menu": "^1.2.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.1",

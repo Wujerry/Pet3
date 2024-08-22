@@ -7,8 +7,8 @@ export default function BindXBtn({ username }: { username: string | undefined })
     <div className='text-white'>
       <Link
         className={buttonVariants({ variant: 'outline' })}
-        href={username ? 'javascript:void(0);' : '/api/auth/x'}
-        target='_blank'
+        href={username ? '#' : '/api/auth/x'}
+        target={username ? '' : '_blank'}
         prefetch={false}
       >
         <Twitter /> <span className='pl-2'>{username ?? 'Bind X'}</span>

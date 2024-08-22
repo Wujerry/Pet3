@@ -27,10 +27,9 @@ function OwnedObjects({ address }: { address: string }) {
     },
   })
   if (data && data.data && data.data.length > 0) {
-    const nftId = data.data[0].data?.objectId
-    console.log('nftId', nftId)
     return (
       <div className='mt-10 p-10'>
+        <div className='p-2 text-center text-lg text-gray-500'>Drag to find hidden treasure box and $PET</div>
         <TabContent></TabContent>
       </div>
     )

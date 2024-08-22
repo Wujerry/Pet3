@@ -15,7 +15,11 @@
   "content_scripts": [
     {
       "js": ["src/main.tsx"],
-      "matches": ["<all_urls>"]
+      "matches": ["<all_urls>"],
+      "exclude_matches": [
+        "http://localhost:3000/*",
+        "https://pet3-fawn.vercel.app/*"
+      ]
     }
   ],
   "permissions": ["storage"]
