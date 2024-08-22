@@ -4,7 +4,7 @@ import Home from './components/home/Home'
 
 function App() {
   return (
-    <div className='w-full'>
+    <div className='w-full dark'>
       <Header></Header>
       <main>
         <Home address={'0x'}></Home>

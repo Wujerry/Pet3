@@ -26,6 +26,7 @@ export default function MintButton() {
         onSuccess: (result) => {
           isMinting = false
           console.log('executed transaction', result)
+          window.location.reload()
         },
       },
     )

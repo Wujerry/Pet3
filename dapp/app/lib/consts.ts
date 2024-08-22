@@ -10,6 +10,6 @@ export const COIN_TYPE = `${PACKAGE}::pet3_token::PET3_TOKEN`
 
 export const POINTS = '0xdd51dc32601962399954260a2acbf937a855195daf7d456d3d73af34c88a7c42'
 
-// export const BASE_URL = 'https://pet3-fawn.vercel.app'
-export const BASE_URL = 'http://localhost:3000'
+export const BASE_URL = 'https://pet3-fawn.vercel.app'
+// export const BASE_URL = 'http://localhost:3000'
 export const NFT_IMGAE_URL = `'${BASE_URL}/pet3.png`
