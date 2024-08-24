@@ -1,10 +1,10 @@
-export const PACKAGE = '0x7170c20cdb5b84082f313fb8ed90520c3f8aa94888062302fae7e4b25829802b'
+export const PACKAGE = '0x9d3ed8ea86d8b76a87ed9ac17953844018a2a5fcf14eacb27842a641b4f9b792'
 export const NFT_TYPE = `${PACKAGE}::pet3::Pet3NFT`
 export const NFT_MINT = `${PACKAGE}::pet3::mint`
 export const CLAIM_BOX = `${PACKAGE}::pet3::claim_box`
-export const MINT_RECORD = '0x7db53221d04a7bce6da54b056e9328d261474ec74d0754e11f571462b00ec167'
-export const ADMIN_CAP = '0xab43f8dc9dcd0f0aa4601a37362877be8ad7580a8b9dac8674df5e91d146e2a7'
-export const PET_POOL = '0xd4a1494c8acfd0efbfdfef914b08d0ffe0810a6b32e0423008759c00e37485bd'
+export const MINT_RECORD = '0x01c14093d490ceb4b5b69efa5608b1f5ad45b4e7e09de17289c5bc862489b7e2'
+export const ADMIN_CAP = '0xa54a120e3763f59a7a23e84aa3d68a9477e312aac2aff9e438f6812d193f97f0'
+export const PET_POOL = '0xdf0bc9703d4e369911454d656e9b20421855121254cc02bf8ae29295f79d7dca'
 
 export const COIN_TYPE = `${PACKAGE}::pet3_token::PET3_TOKEN`
 

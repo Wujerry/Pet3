@@ -132,7 +132,7 @@ use std::string::{String, utf8};
 		}
 
 		fun getRandomPoints(r: &Random, ctx: &mut TxContext): u64 {
-    	random::generate_u64_in_range(&mut random::new_generator(r, ctx), 100000, 1000000)
+    	random::generate_u64_in_range(&mut random::new_generator(r, ctx), 1000000, 10000000)
   	}
 
 		// deposit PET3_TOKEN to the pool

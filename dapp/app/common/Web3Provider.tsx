@@ -9,14 +9,14 @@ import { ReactNode } from 'react'
 // Config options for the networks you want to connect to
 const { networkConfig } = createNetworkConfig({
   // localnet: { url: getFullnodeUrl('localnet') },
-  testnet: { url: getFullnodeUrl('testnet') },
-  // mainnet: { url: getFullnodeUrl('mainnet') },
+  //testnet: { url: getFullnodeUrl('testnet') },
+  mainnet: { url: getFullnodeUrl('mainnet') },
 })
 const queryClient = new QueryClient()
 export default function Web3Provider({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <SuiClientProvider networks={networkConfig} defaultNetwork='testnet'>
+      <SuiClientProvider networks={networkConfig} defaultNetwork='mainnet'>
         <WalletProvider autoConnect={true}>{children}</WalletProvider>
       </SuiClientProvider>
     </QueryClientProvider>
