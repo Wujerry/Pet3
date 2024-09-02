@@ -4,3 +4,6 @@
 [submodule "contract/pet3_linea/lib/solmate"]
 	path = contract/pet3_linea/lib/solmate
 	url = https://github.com/transmissions11/solmate
+[submodule "contract/pet3_linea/lib/openzeppelin-contracts"]
+	path = contract/pet3_linea/lib/openzeppelin-contracts
+	url = https://github.com/Openzeppelin/openzeppelin-contracts
