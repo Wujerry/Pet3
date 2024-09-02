@@ -1,3 +1,6 @@
 [submodule "contract/pet3_linea/lib/forge-std"]
 	path = contract/pet3_linea/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "contract/pet3_linea/lib/solmate"]
+	path = contract/pet3_linea/lib/solmate
+	url = https://github.com/transmissions11/solmate
