@@ -1,23 +1,23 @@
 'use client'
-import useBalance from '@/app/common/useBalance'
+// import useBalance from '@/app/common/useBalance'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
-import { useCurrentAccount } from '@mysten/dapp-kit'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { useAccount } from 'wagmi'
 
 export default function ClaimBox({ count }: { count: number | undefined }) {
   const router = useRouter()
-  const account = useCurrentAccount()
+  const account = useAccount()
   const [loading, setLoading] = useState(false)
-  const { refreshBalance } = useBalance(account?.address)
+  // const { refreshBalance } = useBalance(account?.address)
   const handleClick = async () => {
     console.log(count)
     if ((count ?? 0) < 1) return
     setLoading(true)
     try {
-      const res = await fetch('/api/box/open', { method: 'GET' })
+      const res = await fetch('/api/box/open?address=' + account!.address, { method: 'GET' })
       const data = await res.json()
       toast({ variant: 'destructive', description: data.message })
       console.log(data)
@@ -26,7 +26,7 @@ export default function ClaimBox({ count }: { count: number | undefined }) {
     } finally {
       setLoading(false)
       router.refresh()
-      refreshBalance()
+      // refreshBalance()
     }
   }
   return (

@@ -30,6 +30,12 @@ export default function RootLayout({
           id='pet3-handler'
           style={{ transform: `translate(var(--pet3-handler-x), var(--pet3-handler-y)) rotate(var(--pet3-rotate))` }}
         ></div>
+        <div
+          id='pet3-handler-efrog'
+          style={{
+            transform: `translate(var(--pet3-handler-efrog-x), var(--pet3-handler-efrog-y)) rotate(var(--pet3-efrog-rotate))`,
+          }}
+        ></div>
         <div id='pet3-lucky-box'>
           <div className='pet3-pl'>
             <div className='pet3-pl__coin'>

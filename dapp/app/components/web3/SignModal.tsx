@@ -1,10 +1,10 @@
 'use client'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import SignMsgBtn from './SignMsgBtn'
-import { useCurrentAccount } from '@mysten/dapp-kit'
+import { useAccount } from 'wagmi'
 
 export default function SignModal() {
-  const account = useCurrentAccount()
+  const account = useAccount()
   return (
     <Dialog open={!!account?.address}>
       <DialogContent>

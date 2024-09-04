@@ -1,8 +1,9 @@
 import * as Matter from 'matter-js'
 import generateBox from './box'
-import initMouseHandle from './mouseHandle'
+import initMouseHandle, { initMouseHandleEfrog } from './mouseHandle'
 import MatterUitl from './util'
 import PetParts from './parts'
+import Efrog from './Efrog'
 
 export function Pet(onBoxClick: () => void) {
   const Engine = Matter.Engine,
@@ -49,6 +50,9 @@ export function Pet(onBoxClick: () => void) {
   const petParts = new PetParts(world)
   petParts.init()
 
+  const efrog = new Efrog(world)
+  efrog.init()
+
   Composite.add(world, [
     // walls
     Bodies.rectangle(stageWidth / 2, -51, stageWidth, 100, { isStatic: true }),
@@ -89,6 +93,8 @@ export function Pet(onBoxClick: () => void) {
 
   // init mouse handle when set canvas element 'pointer-events' to 'none'
   initMouseHandle(petParts.bodyBody!)
+
+  initMouseHandleEfrog(efrog.bodyBody!)
 
   // generate lucky box
   generateBox(engine, world, petParts.bodyBody!, onBoxClick)

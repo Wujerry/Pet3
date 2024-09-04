@@ -29,8 +29,8 @@ contract Pet3TokenTest is Test {
     function test_deposit() public {
         pet3Token.mint(msg.sender, 10000);
         pet3Token.approve(address(pet3Game), 2000);
-        pet3Game.deposit(2000);
-        pet3Game.withdraw(1000);
+        pet3Game.deposit(2000, address(pet3Token));
+        pet3Game.withdraw(1000, address(pet3Token));
         console2.log("pet3Token.balanceOf(address(pet3Game))", pet3Token.balanceOf(address(pet3Game)));
         console2.log("pet3Token.balanceOf(msg.sender)", pet3Token.balanceOf(msg.sender));
         assertEq(pet3Token.balanceOf(address(pet3Game)), 1000);
@@ -40,5 +40,18 @@ contract Pet3TokenTest is Test {
         for (uint256 i = 0; i < 10; i++) {
             console2.log("pet3Game.getRandomOnchain()", pet3Game.getRandomOnchain(i) % 10);
         }
+    }
+
+    function test_claimBox() public {
+        pet3Token.mint(msg.sender, 10000 * 10 ** 18);
+        // pet3Token.approve(address(pet3Game), 10000 * 10 ** 18);
+        // pet3Game.deposit(10000 * 10 ** 18);
+        pet3Token.transfer(address(pet3Game), 10000 * 10 ** 18);
+        console2.log("pet3Token.balanceOf(address(pet3Game))", pet3Token.balanceOf(address(pet3Game)));
+        console2.log("balanceOf sender", pet3Token.balanceOf(msg.sender));
+        uint256 res = pet3Game.claimBox(1, msg.sender);
+
+        console2.log("claimed $PET", res);
+        console2.log("balanceOf sender", pet3Token.balanceOf(msg.sender));
     }
 }

@@ -1,35 +1,30 @@
 'use client'
 
-import { useCurrentAccount, useSignAndExecuteTransaction } from '@mysten/dapp-kit'
-import { Transaction } from '@mysten/sui/transactions'
-import { MINT_RECORD, NFT_IMGAE_URL, NFT_MINT, POINTS } from '../lib/consts'
+import { useAccount } from 'wagmi'
+import { Pet3Game } from '../lib/consts'
+import { useWritePet3Pet3GameMintTo } from '../generated'
+import { waitForTransactionReceipt } from '@wagmi/core'
+import { config } from '../common/config'
 
 export default function MintButton() {
   let isMinting = false
-  const account = useCurrentAccount()
-  const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction()
+  const account = useAccount()
+  const { writeContractAsync } = useWritePet3Pet3GameMintTo()
+
+  // mint pet3
   const handleClick = async () => {
     if (!account) return alert('Please connect your wallet first')
     if (isMinting) return
     isMinting = true
-    const tx = new Transaction()
-    tx.moveCall({
-      target: NFT_MINT,
-      arguments: [tx.object(MINT_RECORD), tx.pure.string(NFT_IMGAE_URL), tx.pure.address(account!.address)],
+    console.log('minting', account.address!)
+    const hash = await writeContractAsync({
+      address: Pet3Game,
+      args: [account.address!],
     })
-    signAndExecuteTransaction(
-      {
-        transaction: tx,
-        // chain: 'sui:testnet',
-      },
-      {
-        onSuccess: (result) => {
-          isMinting = false
-          console.log('executed transaction', result)
-          window.location.reload()
-        },
-      },
-    )
+    const receipt = await waitForTransactionReceipt(config, { hash })
+    isMinting = false
+    console.log('executed transaction', hash, receipt)
+    window.location.reload()
   }
 
   return (

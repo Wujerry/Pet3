@@ -1,61 +1,78 @@
 import { auth } from '@/app/auth'
-import { getFullnodeUrl, SuiClient } from '@mysten/sui/client'
-import { Ed25519Keypair } from '@mysten/sui/keypairs/ed25519'
-import { fromHEX, fromB64 } from '@mysten/sui/utils'
-import { Transaction } from '@mysten/sui/transactions'
 import { sql } from '@vercel/postgres'
 import { redirect } from 'next/navigation'
-import { ADMIN_CAP, CLAIM_BOX, COIN_TYPE, PET_POOL } from '@/app/lib/consts'
-import { decodeSuiPrivateKey } from '@mysten/sui/cryptography'
 import { revalidatePath } from 'next/cache'
+import { pet3Pet3GameAbi, pet3Pet3TokenAbi } from '@/app/generated'
+import { Pet3Game } from '@/app/lib/consts'
+import { createPublicClient, createWalletClient, formatUnits, http, parseEventLogs } from 'viem'
+import { linea } from 'viem/chains'
+import { privateKeyToAccount } from 'viem/accounts'
+import { NextRequest } from 'next/server'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams
+  const inAddress = searchParams.get('address')
+  console.log('inAddress', inAddress)
   const session = await auth()
   if (!session?.user) {
     redirect('/')
   }
   const address = session?.user?.name!
+  if (inAddress !== address) {
+    return Response.json({ message: 'Invalid address' })
+  }
   const userQuery = await sql`select * from users where address = ${address}`
   const user = userQuery.rows[0]
   const boxQuery = await sql`select count(*) as count from box_history where uid = ${user.id} and state = 0`
   const count = boxQuery.rows[0].count
   const contractRes = await callContract(count, address)
-  if (contractRes.effects?.status.status !== 'success') return Response.json({ message: 'contract error!' })
-  const balance = contractRes.balanceChanges?.find((item) => item.coinType === COIN_TYPE)?.amount
   await sql`update box_history set state = 1 where uid = ${user.id} and state = 0`
+  await sql`insert into reward_history (address, reward, date) values (${address}, ${contractRes}, now())`
   // redirect('/')
   revalidatePath('/')
-  return Response.json({ message: `Claimed ${(Number(balance) / 1000000).toFixed(3)} $PET` })
+  return Response.json({ message: `Claimed ${contractRes}` })
 }
 
 async function callContract(count: number, address: string) {
-  const rpcUrl = getFullnodeUrl('testnet')
-  const adminKeypairs = Ed25519Keypair.fromSecretKey(decodeSuiPrivateKey(process.env.SUI_PRIVATE_KEY!).secretKey)
+  const account = privateKeyToAccount(process.env.Owner_key as `0x${string}`)
+  const client = createWalletClient({
+    account,
+    chain: linea,
+    transport: http(),
+  })
 
-  // create a client connected to devnet
-  const client = new SuiClient({ url: rpcUrl })
-  const tx = new Transaction()
-  tx.moveCall({
-    target: CLAIM_BOX,
-    arguments: [
-      tx.object(ADMIN_CAP),
-      tx.object(PET_POOL),
-      tx.pure.address(address),
-      tx.pure.u64(count),
-      tx.object('0x8'),
-    ],
+  const publicClient = createPublicClient({
+    chain: linea,
+    transport: http(),
   })
-  tx.setGasBudgetIfNotSet(100000000)
-  const res = await client.signAndExecuteTransaction({
-    transaction: tx,
-    signer: adminKeypairs,
+
+  console.log('count', count)
+  const hash = await client.writeContract({
+    abi: pet3Pet3GameAbi,
+    address: Pet3Game,
+    functionName: 'claimBox',
+    args: [BigInt(count), address as `0x${string}`],
   })
-  const transaction = await client.waitForTransaction({
-    digest: res.digest,
-    options: {
-      showBalanceChanges: true,
-      showEffects: true,
-    },
+  console.log(hash)
+  const res = await publicClient.waitForTransactionReceipt({
+    hash,
   })
-  return transaction
+  const logs = parseEventLogs({
+    abi: pet3Pet3GameAbi,
+    eventName: 'BoxClaimed',
+    logs: res.logs,
+  })
+  let result = '0'
+  let symbol = '$PET'
+  if (logs.length > 0) {
+    result = formatUnits(logs[0].args.amount, 18)
+    const tokenAddress = logs[0].args.tokenAddress
+    const data = await publicClient.readContract({
+      address: tokenAddress as `0x${string}`,
+      abi: pet3Pet3TokenAbi,
+      functionName: 'symbol',
+    })
+    symbol = data
+  }
+  return result + ' ' + symbol
 }

@@ -1,11 +1,11 @@
 'use client'
 
-import { ConnectButton } from '@mysten/dapp-kit'
+import { ConnectKitButton } from 'connectkit'
 
 export default function ConnectBtn() {
   return (
     <div>
-      <ConnectButton />
+      <ConnectKitButton />
     </div>
   )
 }

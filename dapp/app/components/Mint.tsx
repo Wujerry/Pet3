@@ -1,10 +1,8 @@
 'use client'
 import React, { useRef } from 'react'
 import { motion, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion'
-import Image from 'next/image'
 import './mint.css'
 import MintButton from './MintButton'
-import AppBg from './AppBg'
 
 const Mint = () => {
   return (
@@ -16,7 +14,7 @@ const Mint = () => {
       <div className='p-2 text-center text-lg text-gray-500'>
         Pet3 is a virtual pet on Chrome Extension.
         <br />
-        Drag to find hidden treasure box and $PET
+        Drag to find hidden treasure box and $PET, $CROAK, etc
       </div>
     </div>
   )

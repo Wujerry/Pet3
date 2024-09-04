@@ -1,10 +1,10 @@
-import { isValidSuiAddress } from '@mysten/sui/utils'
-import { verifyPersonalMessageSignature } from '@mysten/sui/verify'
 import { sql } from '@vercel/postgres'
 import NextAuth from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 import { User } from './lib/def'
 import Twitter from 'next-auth/providers/twitter'
+import { createPublicClient, http } from 'viem'
+import { linea } from 'viem/chains'
 
 async function getUser(address: string): Promise<User | undefined> {
   try {
@@ -47,9 +47,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const xToken = String(credentials?.xToken)
         const type = String(credentials?.type)
 
-        if (!isValidSuiAddress(address)) {
-          return null
-        }
+        // if (!isValidSuiAddress(address)) {
+        //   return null
+        // }
 
         if (type === 'ext') {
           const user = await getUserByXToken(address, xToken)
@@ -63,10 +63,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             return null
           }
         } else {
-          const message = new TextEncoder().encode('123')
           try {
-            const publicKey = await verifyPersonalMessageSignature(message, signature)
-            if (publicKey.toSuiAddress() !== address) {
+            const publicClient = createPublicClient({
+              chain: linea,
+              transport: http(),
+            })
+            const verifyResult = await publicClient.verifyMessage({
+              address: address as any,
+              message: 'sign in pet3',
+              signature: signature as any,
+            })
+            if (!verifyResult) {
               return null
             }
             const user = await getUser(address)

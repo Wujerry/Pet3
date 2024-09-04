@@ -22,6 +22,14 @@ async function seed() {
       uid UUID NOT NULL,
       amount INT NOT NULL,
 			state INT NOT NULL,
+			date DATE NOT NULL,
+    );
+  `
+  await client.sql`
+    CREATE TABLE IF NOT EXISTS reward_history (
+      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      address TEXT NOT NULL,
+      reward TEXT NOT NULL,
 			date DATE NOT NULL
     );
   `

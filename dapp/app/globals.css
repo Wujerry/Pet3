@@ -96,6 +96,18 @@ body {
   left: 0;
   z-index: 100000;
 }
+#pet3-handler-efrog {
+  --pet3-handler-efrog-x: 0px;
+  --pet3-handler-efrog-y: 0px;
+  --pet3-efrog-rotate: 0rad;
+  height: 75px;
+  width: 118px;
+  background: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100000;
+}
 
 :root {
   --pet3-hue: 163;

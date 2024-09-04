@@ -3,17 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "next dev",
+    "lint": "next lint",
+    "start": "next start"
   },
   "dependencies": {
-    "@mysten/bcs": "^1.0.4",
-    "@mysten/dapp-kit": "^0.14.16",
-    "@mysten/sui": "^1.6.0",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-navigation-menu": "^1.2.0",
+    "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.1",
@@ -21,19 +19,25 @@
     "@radix-ui/react-toggle-group": "^1.1.0",
     "@tanstack/react-query": "^5.51.23",
     "@vercel/postgres": "^0.9.0",
+    "@wagmi/cli": "^2.1.15",
+    "@wagmi/core": "^2.13.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "connectkit": "^1.8.2",
     "eslint-config-prettier": "^9.1.0",
     "framer-motion": "^11.3.28",
     "lucide-react": "^0.428.0",
     "matter-js": "^0.20.0",
     "next": "14.2.5",
     "next-auth": "5.0.0-beta.20",
+    "pino-pretty": "^11.2.2",
     "prettier-plugin-tailwindcss": "^0.6.6",
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "viem": "2.x",
+    "wagmi": "^2.12.8"
   },
   "devDependencies": {
     "@types/node": "^20",

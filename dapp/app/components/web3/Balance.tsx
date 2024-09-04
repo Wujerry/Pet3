@@ -1,12 +1,22 @@
 'use client'
-import useBalance from '@/app/common/useBalance'
-import { COIN_TYPE } from '@/app/lib/consts'
-import { useCurrentAccount } from '@mysten/dapp-kit'
-import { getFullnodeUrl, SuiClient } from '@mysten/sui/client'
-import { useEffect, useState } from 'react'
 
-export default function Balance() {
-  const account = useCurrentAccount()
-  const { balance } = useBalance(account?.address)
-  return <div className='text-yellow-400'>{balance} PET</div>
+import { useAccount } from 'wagmi'
+import { useReadPet3Pet3TokenBalanceOf } from '@/app/generated'
+import { Pet3Token } from '@/app/lib/consts'
+import { formatUnits } from 'viem'
+
+export default function Balance({ address, symbol }: { address: `0x${string}`; symbol: string }) {
+  const account = useAccount()
+  console.log(account?.address)
+  const { data } = useReadPet3Pet3TokenBalanceOf({
+    address: address,
+    args: [account?.address!],
+  })
+
+  const balance = data ? formatUnits(data, 18) : '0'
+  return (
+    <div suppressHydrationWarning className='px-6 text-yellow-400'>
+      {balance} ${symbol}
+    </div>
+  )
 }

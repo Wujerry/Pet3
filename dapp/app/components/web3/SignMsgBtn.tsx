@@ -1,27 +1,21 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import { useCurrentAccount, useSignPersonalMessage } from '@mysten/dapp-kit'
 import { signIn } from 'next-auth/react'
+import { useAccount, useSignMessage } from 'wagmi'
 
 export default function SignMsgBtn() {
-  const account = useCurrentAccount()
+  const account = useAccount()
 
-  const { mutate: signPersonalMessage } = useSignPersonalMessage()
+  const { signMessageAsync } = useSignMessage()
   const handleSignMessage = async () => {
     if (!account) {
       alert('Please connect your wallet first')
       return
     }
-    signPersonalMessage(
-      {
-        message: new TextEncoder().encode('123'),
-      },
-      {
-        onSuccess: async ({ signature }) => {
-          signIn('credentials', { address: account.address, signature })
-        },
-      },
-    )
+    const signature = await signMessageAsync({
+      message: 'sign in pet3',
+    })
+    signIn('credentials', { address: account.address, signature })
   }
   return (
     <div className='flex justify-center p-4'>

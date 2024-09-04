@@ -1,35 +1,38 @@
 'use client'
 
-import { useCurrentAccount, useSuiClientQuery } from '@mysten/dapp-kit'
+import { useAccount } from 'wagmi'
 import { auth } from '../auth'
 import Mint from './Mint'
-import { NFT_TYPE } from '../lib/consts'
 import TabContent from './home/TabContent'
+import { useReadPet3Pet3GameBalanceOf } from '../generated'
+import { Pet3Game } from '../lib/consts'
 
 export default function HomeComp({ isLogin }: { isLogin: boolean }) {
-  const account = useCurrentAccount()
+  const { address } = useAccount()
 
-  if (!account || !isLogin) {
+  if (!address || !isLogin) {
     return <Mint></Mint>
   }
 
-  if (account) {
-    return <OwnedObjects address={account.address}></OwnedObjects>
+  if (address) {
+    return <OwnedObjects address={address}></OwnedObjects>
   }
 }
 
-function OwnedObjects({ address }: { address: string }) {
+function OwnedObjects({ address }: { address: `0x${string}` }) {
   console.log(address)
-  const { data } = useSuiClientQuery('getOwnedObjects', {
-    owner: address,
-    filter: {
-      StructType: NFT_TYPE,
-    },
+  const { data } = useReadPet3Pet3GameBalanceOf({
+    address: Pet3Game,
+    args: [address],
   })
-  if (data && data.data && data.data.length > 0) {
+  console.log(data)
+
+  if (data && data > 0) {
     return (
       <div className='mt-10 p-10'>
-        <div className='p-2 text-center text-lg text-gray-500'>Drag to find hidden treasure box and $PET</div>
+        <div className='p-2 text-center text-lg text-gray-500'>
+          Drag to find hidden treasure box and $PET, $CROAK, etc
+        </div>
         <TabContent></TabContent>
       </div>
     )
