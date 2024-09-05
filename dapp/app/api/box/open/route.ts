@@ -38,22 +38,35 @@ async function callContract(count: number, address: string) {
   const client = createWalletClient({
     account,
     chain: linea,
-    transport: http(),
+    transport: http('https://linea-mainnet.g.alchemy.com/v2/' + process.env.alchemy_key),
   })
 
   const publicClient = createPublicClient({
     chain: linea,
-    transport: http(),
+    transport: http('https://linea-mainnet.g.alchemy.com/v2/' + process.env.alchemy_key),
   })
 
   console.log('count', count)
-  const hash = await client.writeContract({
-    abi: pet3Pet3GameAbi,
-    address: Pet3Game,
-    functionName: 'claimBox',
-    args: [BigInt(count), address as `0x${string}`],
-  })
-  console.log(hash)
+  // const { request } = await publicClient.simulateContract({
+
+  // })
+  // console.log(request)
+  const gas = BigInt(0.5 * 10 ** 9)
+  let hash: `0x${string}` = '0x123'
+  try {
+    hash = await client.writeContract({
+      abi: pet3Pet3GameAbi,
+      address: Pet3Game,
+      functionName: 'claimBox',
+      args: [BigInt(count), address as `0x${string}`],
+      maxFeePerGas: gas,
+      maxPriorityFeePerGas: gas,
+      account,
+    })
+  } catch (e) {
+    console.log(e)
+  }
+
   const res = await publicClient.waitForTransactionReceipt({
     hash,
   })
