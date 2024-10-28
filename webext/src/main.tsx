@@ -1,7 +1,11 @@
 // import './index.css'
 
 import { boxCss, boxHtml } from './pet/assets/boxHtml'
-import { pet3HandlerStyle, pet3WrapperStyle } from './pet/assets/wrapperHtml'
+import {
+  pet3HandlerStyle,
+  pet3HandlerStyleEfrog,
+  pet3WrapperStyle,
+} from './pet/assets/wrapperHtml'
 import { Pet } from './pet/Pet'
 
 function initDom() {
@@ -22,6 +26,15 @@ function initDom() {
   const handlerStyle = document.createElement('style')
   handlerStyle.innerHTML = pet3HandlerStyle
   document.head.appendChild(handlerStyle)
+
+  // create pet3 efrog handler
+  const handlerDomEfrog = document.createElement('div')
+  handlerDomEfrog.id = 'pet3-handler-efrog'
+  handlerDomEfrog.style.transform = `translate(var(--pet3-handler-efrog-x), var(--pet3-handler-efrog-y)) rotate(var(--pet3-efrog-rotate))`
+  document.body.appendChild(handlerDomEfrog)
+  const handlerStyleEfrog = document.createElement('style')
+  handlerStyleEfrog.innerHTML = pet3HandlerStyleEfrog
+  document.head.appendChild(handlerStyleEfrog)
 
   // create lucky box
   const luckyBox = document.createElement('div')

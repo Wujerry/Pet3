@@ -33,8 +33,7 @@ export default class PetParts {
     this.bodyRightArm = this.createRightArm()
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  createBody(initConstraint = true) {
+  createBody() {
     const width = 60
     const height = 80
     const body = Matter.Bodies.rectangle(

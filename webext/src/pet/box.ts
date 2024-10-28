@@ -21,8 +21,10 @@ export default function generateBox(
   const bodyBox = Bodies.rectangle(x, y, boxWidth, boxHeight, {
     isStatic: true,
     render: {
-      fillStyle: '#000',
-      visible: false,
+      fillStyle: 'transparent',
+      // visible: false,
+      strokeStyle: '#bdbdbd',
+      lineWidth: 1,
     },
   })
   Composite.add(world, [bodyBox])

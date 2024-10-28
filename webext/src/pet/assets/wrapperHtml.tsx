@@ -25,3 +25,18 @@ export const pet3HandlerStyle = `
   z-index: 100000;
 }
 	`
+
+export const pet3HandlerStyleEfrog = `
+#pet3-handler-efrog {
+  --pet3-handler-efrog-x: 0px;
+  --pet3-handler-efrog-y: 0px;
+  --pet3-efrog-rotate: 0rad;
+  height: 75px;
+  width: 115px;
+  background: transparent;
+  position: fixed;
+	top: 0;
+	left: 0;
+  z-index: 100000;
+}
+	`
