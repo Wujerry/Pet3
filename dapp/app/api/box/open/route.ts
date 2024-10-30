@@ -64,7 +64,7 @@ async function callContract(count: number, address: string) {
       account,
     })
   } catch (e) {
-    return console.log(e)
+    console.log(e)
   }
 
   const res = await publicClient.waitForTransactionReceipt({
