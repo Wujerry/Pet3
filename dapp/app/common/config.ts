@@ -1,16 +1,28 @@
 import { getDefaultConfig } from 'connectkit'
+import { Chain } from 'viem/chains'
 import { createConfig, http } from 'wagmi'
-import { linea } from 'wagmi/chains'
+
+export const aiaTestnet = {
+  id: 1320,
+  name: 'AIA',
+  nativeCurrency: { name: 'AIA', symbol: 'AIA', decimals: 18 },
+  rpcUrls: {
+    default: { http: ['https://aia-dataseed1-testnet.aiachain.org'] },
+  },
+  blockExplorers: {
+    default: { name: 'AIAscan', url: 'https://testnet.aiascan.com' },
+  },
+} as const satisfies Chain
 
 export const config = createConfig(
   getDefaultConfig({
     // Your dApps chains
-    chains: [linea],
+    chains: [aiaTestnet],
     transports: {
       // RPC URL for each chain
       // [lineaTestnet.id]: http(),
       // [foundry.id]: http(),
-      [linea.id]: http(),
+      [aiaTestnet.id]: http(),
     },
     // Required API Keys
     walletConnectProjectId: '',
