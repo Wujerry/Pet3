@@ -1,18 +1,7 @@
 import { getDefaultConfig } from 'connectkit'
 import { Chain } from 'viem/chains'
 import { createConfig, http } from 'wagmi'
-
-export const aiaTestnet = {
-  id: 1320,
-  name: 'AIA',
-  nativeCurrency: { name: 'AIA', symbol: 'AIA', decimals: 18 },
-  rpcUrls: {
-    default: { http: ['https://aia-dataseed1-testnet.aiachain.org'] },
-  },
-  blockExplorers: {
-    default: { name: 'AIAscan', url: 'https://testnet.aiascan.com' },
-  },
-} as const satisfies Chain
+import { aiaTestnet } from './aiachain'
 
 export const config = createConfig(
   getDefaultConfig({

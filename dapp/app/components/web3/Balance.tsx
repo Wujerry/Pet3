@@ -7,11 +7,12 @@ import { formatUnits } from 'viem'
 
 export default function Balance({ address, symbol }: { address: `0x${string}`; symbol: string }) {
   const account = useAccount()
-  console.log(account?.address)
+  console.log(222, account?.address, account)
   const { data } = useReadPet3Pet3TokenBalanceOf({
     address: address,
     args: [account?.address!],
   })
+  console.log(123123, data)
 
   const balance = data ? formatUnits(data, 18) : '0'
   return (

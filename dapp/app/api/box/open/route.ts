@@ -5,9 +5,9 @@ import { revalidatePath } from 'next/cache'
 import { pet3Pet3GameAbi, pet3Pet3TokenAbi } from '@/app/generated'
 import { Pet3Game } from '@/app/lib/consts'
 import { createPublicClient, createWalletClient, formatUnits, http, parseEventLogs } from 'viem'
-import { linea } from 'viem/chains'
 import { privateKeyToAccount } from 'viem/accounts'
 import { NextRequest } from 'next/server'
+import { aiaTestnet } from '@/app/common/aiachain'
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
@@ -37,13 +37,13 @@ async function callContract(count: number, address: string) {
   const account = privateKeyToAccount(process.env.Owner_key as `0x${string}`)
   const client = createWalletClient({
     account,
-    chain: linea,
-    transport: http('https://linea-mainnet.g.alchemy.com/v2/' + process.env.alchemy_key),
+    chain: aiaTestnet,
+    transport: http(),
   })
 
   const publicClient = createPublicClient({
-    chain: linea,
-    transport: http('https://linea-mainnet.g.alchemy.com/v2/' + process.env.alchemy_key),
+    chain: aiaTestnet,
+    transport: http(),
   })
 
   console.log('count', count)
@@ -51,7 +51,7 @@ async function callContract(count: number, address: string) {
 
   // })
   // console.log(request)
-  const gas = BigInt(0.5 * 10 ** 9)
+  // const gas = BigInt(1 * 10 ** 18)
   let hash: `0x${string}` = '0x123'
   try {
     hash = await client.writeContract({
@@ -59,12 +59,12 @@ async function callContract(count: number, address: string) {
       address: Pet3Game,
       functionName: 'claimBox',
       args: [BigInt(count), address as `0x${string}`],
-      maxFeePerGas: gas,
-      maxPriorityFeePerGas: gas,
+      // maxFeePerGas: gas,
+      // maxPriorityFeePerGas: gas,
       account,
     })
   } catch (e) {
-    console.log(e)
+    return console.log(e)
   }
 
   const res = await publicClient.waitForTransactionReceipt({

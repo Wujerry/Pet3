@@ -13,7 +13,7 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import { Separator } from '@/components/ui/separator'
-import { CROAKToken, Pet3Token } from '../lib/consts'
+import { Pet3Token } from '../lib/consts'
 
 export default async function Header({ isLogin }: Readonly<{ isLogin: boolean }>) {
   const isShowSignModal = !isLogin
@@ -58,7 +58,6 @@ export default async function Header({ isLogin }: Readonly<{ isLogin: boolean }>
         <div className='mr-4 flex'>
           <Balance address={Pet3Token} symbol='PET'></Balance>
           <Separator orientation='vertical' />
-          <Balance address={CROAKToken} symbol='CROAK'></Balance>
         </div>
       </div>
     </div>
